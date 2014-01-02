@@ -1,6 +1,6 @@
 import glob
 import os
-
+from os.path import join
 import struct
 
 
@@ -21,7 +21,7 @@ def count_num_files(path):
 
 
 def write_csv_header(csv_file, header):
-    with open(csv_file, 'w') as f:
+    with open(csv_file, 'a') as f:
         f.write(header)
 
 

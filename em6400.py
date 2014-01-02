@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 
 from smart_meter import SmartMeter
@@ -16,16 +18,16 @@ meter_config.param_indices = find_param_numbers(
 
 # Find the CSV file to write in
 csv_file_number = count_num_files(DATA_PATH)
-csv_file_path = os.path.join(DATA_PATH, csv_file_number + ".csv")
+csv_file_path = os.path.join(DATA_PATH, str(csv_file_number) + ".csv")
 
 # Write header into the CSV
-write_csv_header(csv_file_complete_path, HEADER)
+write_csv_header(csv_file_path, meter_config.params_provided + "\n")
 
 # Instantiate smartmeter
 smart_meter = SmartMeter(meter_config.retries, meter_config.com_method,
-                         meter_config.meter_port, meter_config.baudrate,
-                         meter_config.stopbits, meter_config.parity,
-                         meter_config.bytesize, meter_config.timeout)
+                         meter_config.baudrate,meter_config.stopbits,
+                         meter_config.parity,meter_config.bytesize, 
+                         meter_config.timeout)
 
 # Make a connection
 smart_meter.connect(meter_config.vendor, meter_config.product)
