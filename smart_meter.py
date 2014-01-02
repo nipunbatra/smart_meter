@@ -21,9 +21,8 @@ class SmartMeter(object):
         self.client = ModbusClient(
             retries=self.retries, method=self.com_method,
             baudrate=self.baudrate, stopbits=self.stopbits, parity=self.parity,
-            bytesize=self.bytesize, timeout=self.timeout)
-        print("Connected")
-        print self.client.port
+            bytesize=self.bytesize, timeout=self.timeout, port=self.meter_port)
+        print("Connected to smart meter over: %s" % (self.client.port))
 
     def read_from_meter(self, meter_id, base_register, block_size,
                         params_indices):
@@ -33,11 +32,13 @@ class SmartMeter(object):
         for i in range(0, (block_size - 1), 2):
             for j in params_indices:
                 if(j == i):
-                    data = data + str(int(time.time())) + "," + convert_to_str(binary_data.registers[i + 1] << 16 +
-                                                                               binary_data.registers[i])
+                    data = data + str(int(time.time())) + "," + \
+                        convert_to_str(
+                            (binary_data.registers[i + 1] << 16) + binary_data.registers[i])
+
         data = data[:-1] + "\n"
         return data
 
-    def write_csv(csv_path, data):
+    def write_csv(self, csv_path, data):
         with open(csv_path, 'a') as f:
             f.write(data)

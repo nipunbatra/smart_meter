@@ -28,7 +28,7 @@ def write_csv_header(csv_file, header):
 def find_param_numbers(params_provided, params_to_record):
     provided_array = params_provided.split(",")
     record_array = params_to_record.split(",")
-    param_numbers = [provided_array.index(x) for x in record_array]
+    param_numbers = [provided_array.index(x)*2 for x in record_array]
     return param_numbers
 
 
