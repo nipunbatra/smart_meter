@@ -1,3 +1,6 @@
+"""Contains the instantiation to collect data from Schneider Electric
+ EM6400 smartmeter"""
+
 from __future__ import print_function
 
 import os

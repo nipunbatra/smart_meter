@@ -40,23 +40,31 @@ class SmartMeter(object):
         self.bytesize = bytesize
         self.timeout = timeout
 
-    def connect(self, vendor, product):
-        """Connects to a specific port. The serial port on RPi is subject
-        to change. Thus, a method finds the address of FT232 chip
+    def connect(self, meter_port=None, vendor, product):
+        """Connects to a specific port (if specified). Else, if the device details
+        of USB-Modbus device are given, finds the port on which they are attached.
+        This may be needed as the serial port on RPi was observed to.
 
         Parameters
         ----------
         vendor: string
         product: string
 
+        Returns
+        --------
+        client : ModbusSerialClient
         """
-        self.meter_port = find_tty_usb(vendor, product)
+        if meter_port is None:
+            self.meter_port = find_tty_usb(vendor, product)
+        else:
+            self.meter_port = meter_port
         print("Connecting to %s" % (self.meter_port))
         self.client = ModbusClient(
             retries=self.retries, method=self.com_method,
             baudrate=self.baudrate, stopbits=self.stopbits, parity=self.parity,
             bytesize=self.bytesize, timeout=self.timeout, port=self.meter_port)
         print("Connected to smart meter over: %s" % (self.client.port))
+        return self.client
 
     def read_from_meter(self, meter_id, base_register, block_size,
                         params_indices):
