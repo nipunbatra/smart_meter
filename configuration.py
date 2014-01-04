@@ -1,5 +1,5 @@
 # Path where the data gets stored
-DATA_PATH = "/home/nipun/Desktop/"
+DATA_PATH = "/home/pi/Desktop/"
 
 # Parameters associated with USB-Modbus device
 
