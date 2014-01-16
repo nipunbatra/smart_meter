@@ -14,12 +14,14 @@ We will pull the latest .debs from RPi mirror
 1. Installing numpy
 
 ```
+
 wget http://mirrordirector.raspbian.org/raspbian/pool/main/p/python-numpy/python-numpy_1.7.1-3_armhf.deb
 
 sudo dpkg -i python-numpy_1.7.1-3_armhf.deb
 ```
 
 2. Installing Pandas and dependencies
+
 ```
 wget http://mirrordirector.raspbian.org/raspbian/pool/main/p/pandas/python-pandas-lib_0.12.0-2_armhf.deb
 
@@ -41,6 +43,7 @@ sudo dpkg -i python-pandas_0.12.0-2_all.deb
 3. Installing scikit-learn
 
 ```
+
 wget http://mirrordirector.raspbian.org/raspbian/pool/main/s/scikit-learn/python-sklearn-lib_0.14.1-2_armhf.deb
 
 wget http://mirrordirector.raspbian.org/raspbian/pool/main/s/scikit-learn/python-sklearn-lib_0.14.1-2_armhf.deb
@@ -50,7 +53,9 @@ sudo dpkg -i --ignore-depends="python-sklearn" "python-scikits-learn_0.14.1-2_al
 ```
 
 4. Installing git
+
 ```
+
 sudo apt-get install git
 ```
 
