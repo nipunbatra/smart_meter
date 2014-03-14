@@ -1,6 +1,7 @@
 from utils import find_tty_usb, convert_to_str
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 import time
+from datetime import datetime
 
 
 class SmartMeter(object):
@@ -89,7 +90,7 @@ class SmartMeter(object):
         for i in range(0, (block_size - 1), 2):
             for j in params_indices:
                 if(j == i):
-                    data = data + str(int(time.time())) + "," + \
+                    data = data + str(datetime.now()) + "," + \
                         convert_to_str(
                             (binary_data.registers[i + 1] << 16) + binary_data.registers[i])
 
