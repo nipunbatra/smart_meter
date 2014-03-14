@@ -5,33 +5,32 @@ import time
 
 class SmartMeter(object):
 
-	"""
-	1. Sets up a smart meter connection
-	2. Specifies a serial port to connect to
-	3. Methods to read and write data (to csv)
-	"""
+    """
+    1. Sets up a smart meter connection
+    2. Specifies a serial port to connect to
+    3. Methods to read and write data (to csv)
+    """
 
-    def __init__(self, retries=2, com_method='rtu', baudrate=19200,
-                 stopbits=1, parity='N', bytesize=8, timeout=0.1):
-    	"""Sets up parameters for modbus connection to the smart meter
+    def __init__(self, retries=2, com_method='rtu', baudrate=19200, stopbits=1, parity='N', bytesize=8, timeout=0.1):
+        """Sets up parameters for modbus connection to the smart meter
 
-    	Parameters
-    	----------
-    	retries :  int, default=2
+        Parameters
+        ----------
+        retries :  int, default=2
              The number of times a packet read request must be made
-    	com_method : string, default='rtu'
+        com_method : string, default='rtu'
             Mode of connection
-    	baudrate : int, default=19200
+        baudrate : int, default=19200
             Baudrate set on the smart meter, eg. 9600, 19200
-    	stopbits : int, default=1
+        stopbits : int, default=1
             Number of stopbits set on the smart meter, eg. 1
-    	parity : string, default='N'
+        parity : string, default='N'
             Parity set on the smart meter, eg. 'N':None, 'E':Even
-    	bytesize : int, default=8
+        bytesize : int, default=8
             Size of packet, eg. 8
-    	timeout : float, default=0.1
+        timeout : float, default=0.1
             Number of seconds before a request times out, eg. 0.1
-    	"""
+        """
         self.retries = retries
         self.com_method = com_method
         self.baudrate = baudrate
@@ -40,7 +39,7 @@ class SmartMeter(object):
         self.bytesize = bytesize
         self.timeout = timeout
 
-    def connect(self, meter_port=None, vendor, product):
+    def connect(self,vendor="", product="",meter_port=None):
         """Connects to a specific port (if specified). Else, if the device details
         of USB-Modbus device are given, finds the port on which they are attached.
         This may be needed as the serial port on RPi was observed to.

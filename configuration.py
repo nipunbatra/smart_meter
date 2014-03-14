@@ -1,13 +1,13 @@
 # Path where the data gets stored
-DATA_PATH = "/home/pi/Desktop/"
+DATA_PATH = "/home/nipun/Desktop/"
 
 # Parameters associated with USB-Modbus device
 
 _6400 = {
-    'meter_id': 1,
+    'meter_id': 2,
     'stopbits': 1,
     'bytesize': 8,
-    'parity': 'N',
+    'parity': 'E',
     'baudrate': 19200,
 
     # Parameters for communication
