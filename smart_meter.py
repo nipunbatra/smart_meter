@@ -92,7 +92,8 @@ class SmartMeter(object):
         except:
             # Sleep for some time and again try to connect
             time.sleep(0.5)
-            self.connect(vendor=self.vendor, product=self.product)
+            self.client = self.connect(
+                vendor=self.vendor, product=self.product)
             binary_data = self.client.read_holding_registers(
                 base_register, block_size, unit=meter_id)
 
