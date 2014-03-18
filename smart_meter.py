@@ -105,7 +105,7 @@ class SmartMeter(object):
                             (binary_data.registers[i + 1] << 16) + binary_data.registers[i])
 
         data = data[:-1] + "\n"
-        data = str(datetime.now()) + data
+        data = str(time.time()) + data
         return data
 
     def write_csv(self, csv_path, data):
