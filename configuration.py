@@ -1,5 +1,5 @@
 # Path where the data gets stored
-DATA_PATH = "/home/pi/Desktop/"
+DATA_PATH = "/home/pi/Copy/"
 
 # Parameters associated with USB-Modbus device
 
