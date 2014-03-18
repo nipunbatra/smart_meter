@@ -100,9 +100,8 @@ class SmartMeter(object):
         for i in range(0, (block_size - 1), 2):
             for j in params_indices:
                 if(j == i):
-                    data = data  + ","\
-                        convert_to_str(
-                            (binary_data.registers[i + 1] << 16) + binary_data.registers[i])
+                    data = data + "," + convert_to_str(
+                        (binary_data.registers[i + 1] << 16) + binary_data.registers[i])
 
         data = data[:-1] + "\n"
         data = str(time.time()) + data
