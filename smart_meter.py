@@ -40,7 +40,7 @@ class SmartMeter(object):
         self.bytesize = bytesize
         self.timeout = timeout
 
-    def connect(self,vendor="", product="",meter_port=None):
+    def connect(self, vendor="", product="", meter_port=None):
         """Connects to a specific port (if specified). Else, if the device details
         of USB-Modbus device are given, finds the port on which they are attached.
         This may be needed as the serial port on RPi was observed to.
@@ -58,12 +58,12 @@ class SmartMeter(object):
             self.meter_port = find_tty_usb(vendor, product)
         else:
             self.meter_port = meter_port
-        print("Connecting to %s" % (self.meter_port))
+        #print("Connecting to %s" % (self.meter_port))
         self.client = ModbusClient(
             retries=self.retries, method=self.com_method,
             baudrate=self.baudrate, stopbits=self.stopbits, parity=self.parity,
             bytesize=self.bytesize, timeout=self.timeout, port=self.meter_port)
-        print("Connected to smart meter over: %s" % (self.client.port))
+        #print("Connected to smart meter over: %s" % (self.client.port))
         return self.client
 
     def read_from_meter(self, meter_id, base_register, block_size,
@@ -84,8 +84,16 @@ class SmartMeter(object):
         data: Comma separated values correpsonding to parameters whose indices
         were specified
         """
-        binary_data = self.client.read_holding_registers(
-            base_register, block_size, unit=meter_id)
+        try:
+            binary_data = self.client.read_holding_registers(
+                base_register, block_size, unit=meter_id)
+        except:
+            # Sleep for some time and again try to connect
+            time.sleep(0.5)
+            self.connect(vendor="", product="", meter_port=self.meter_port)
+            binary_data = self.client.read_holding_registers(
+                base_register, block_size, unit=meter_id)
+
         data = ""
         for i in range(0, (block_size - 1), 2):
             for j in params_indices:
