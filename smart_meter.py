@@ -55,6 +55,8 @@ class SmartMeter(object):
         client : ModbusSerialClient
         """
         if meter_port is None:
+            self.vendor = vendor
+            self.product = product
             self.meter_port = find_tty_usb(vendor, product)
         else:
             self.meter_port = meter_port
@@ -90,7 +92,7 @@ class SmartMeter(object):
         except:
             # Sleep for some time and again try to connect
             time.sleep(0.5)
-            self.connect(vendor="", product="", meter_port=self.meter_port)
+            self.connect(vendor=self.vendor, product=self.product)
             binary_data = self.client.read_holding_registers(
                 base_register, block_size, unit=meter_id)
 
