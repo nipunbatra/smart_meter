@@ -15,7 +15,7 @@ class SmartMeter(object):
 
     def __init__(self, retries=2, com_method='rtu',
                  baudrate=19200, stopbits=1, parity='N',
-                 bytesize=8, timeout=0.1, logfile):
+                 bytesize=8, timeout=0.1, logfile='sm.log'):
         """Sets up parameters for modbus connection to the smart meter
 
         Parameters
