@@ -50,12 +50,15 @@ class SmartMeter(object):
         formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.fh.setFormatter(formatter)
-        self.logger.addHandler(fh)
+        self.logger.addHandler(self.fh)
 
     def connect(self, vendor="", product="", meter_port=None):
-        """Connects to a specific port (if specified). Else, if the device details
-        of USB-Modbus device are given, finds the port on which they are attached.
-        This may be needed as the serial port on RPi was observed to.
+        """Connects to a specific port (if specified). 
+        Else, if the device details
+        of USB-Modbus device are given, finds the port 
+        on which they are attached.
+        This may be needed as the serial port on RPi 
+        was observed to.
 
         Parameters
         ----------
