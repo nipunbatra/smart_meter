@@ -2,6 +2,7 @@ from utils import find_tty_usb, convert_to_str
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 import time
 from datetime import datetime
+import logging
 
 
 class SmartMeter(object):
@@ -12,7 +13,9 @@ class SmartMeter(object):
     3. Methods to read and write data (to csv)
     """
 
-    def __init__(self, retries=2, com_method='rtu', baudrate=19200, stopbits=1, parity='N', bytesize=8, timeout=0.1):
+    def __init__(self, retries=2, com_method='rtu',
+                 baudrate=19200, stopbits=1, parity='N',
+                 bytesize=8, timeout=0.1, logfile):
         """Sets up parameters for modbus connection to the smart meter
 
         Parameters
@@ -31,6 +34,8 @@ class SmartMeter(object):
             Size of packet, eg. 8
         timeout : float, default=0.1
             Number of seconds before a request times out, eg. 0.1
+        logfile: string, eg. '/home/pi/abc.log'
+            File to store the log
         """
         self.retries = retries
         self.com_method = com_method
@@ -39,6 +44,13 @@ class SmartMeter(object):
         self.parity = parity
         self.bytesize = bytesize
         self.timeout = timeout
+        self.logger = logging.getLogger('smart_meter')
+        self.logger.setLevel(logging.DEBUG)
+        self.fh = logging.FileHandler(logfile)
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        self.fh.setFormatter(formatter)
+        self.logger.addHandler(fh)
 
     def connect(self, vendor="", product="", meter_port=None):
         """Connects to a specific port (if specified). Else, if the device details
@@ -60,12 +72,12 @@ class SmartMeter(object):
             self.meter_port = find_tty_usb(vendor, product)
         else:
             self.meter_port = meter_port
-        #print("Connecting to %s" % (self.meter_port))
+        self.logger.info('Connecting to port: %s' % self.meter_port)
         self.client = ModbusClient(
             retries=self.retries, method=self.com_method,
             baudrate=self.baudrate, stopbits=self.stopbits, parity=self.parity,
             bytesize=self.bytesize, timeout=self.timeout, port=self.meter_port)
-        #print("Connected to smart meter over: %s" % (self.client.port))
+        self.logger.info('Connected to port: %s' % self.meter_port)
         return self.client
 
     def read_from_meter(self, meter_id, base_register, block_size,
@@ -89,9 +101,11 @@ class SmartMeter(object):
         try:
             binary_data = self.client.read_holding_registers(
                 base_register, block_size, unit=meter_id)
-        except:
+        except Exception as e:
             # Sleep for some time and again try to connect
             time.sleep(0.5)
+            self.logger.exception(e)
+            self.logger.info('Will now try to reconnect')
             self.client = self.connect(
                 vendor=self.vendor, product=self.product)
             binary_data = self.client.read_holding_registers(

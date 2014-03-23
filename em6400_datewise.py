@@ -8,7 +8,7 @@ import os
 from smart_meter import SmartMeter
 from utils import count_num_files, write_csv_header, find_param_numbers
 from utils import Struct
-from configuration import DATA_PATH
+from configuration import DATA_PATH, LOG_PATH
 from datetime import datetime
 import time
 
@@ -24,7 +24,7 @@ meter_config.param_indices = find_param_numbers(
 smart_meter = SmartMeter(meter_config.retries, meter_config.com_method,
                          meter_config.baudrate, meter_config.stopbits,
                          meter_config.parity, meter_config.bytesize,
-                         meter_config.timeout)
+                         meter_config.timeout, LOG_PATH)
 
 # Make a connection
 smart_meter.connect(meter_config.vendor, meter_config.product)
